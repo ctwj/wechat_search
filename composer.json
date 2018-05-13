@@ -3,7 +3,7 @@
     "type": "library",
     "description": "api for wechat subscribe account and articles by sogou search",
     "keywords": ["sogou","wechat","search","api"],
-    "homepage": "",
+    "homepage": "http://www.safecode.cc",
     "license": "MIT",
     "authors": [
         {
@@ -14,7 +14,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "jaeger/phpquery-single": "^0.9.9",
+        "rmccue/requests": "^1.7"
     },
     "autoload": {
         "psr-4": {
