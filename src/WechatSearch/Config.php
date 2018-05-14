@@ -162,7 +162,7 @@ class Config
      *
      * @return self
      */
-    public function setProxyEnable(boolean $_proxyEnable)
+    public function setProxyEnable(bool $_proxyEnable)
     {
         $this->_proxyEnable = $_proxyEnable;
 
@@ -210,7 +210,7 @@ class Config
      *
      * @return self
      */
-    public function setProxyObject(Object $_proxyObject)
+    public function setProxyObject(Array $_proxyObject)
     {
         $this->_proxyObject = $_proxyObject;
 

@@ -24,7 +24,10 @@ require '../vendor/autoload.php';
  */
 function exampleSearchAccount()
 {
-    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->searchAccount('童话');
+    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->searchAccounts('童话');
     return $result;
 };
+
+$out = exampleSearchAccount();
+var_dump($out);
 
