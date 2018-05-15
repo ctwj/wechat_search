@@ -15,6 +15,8 @@
 
 namespace Ctwj\WechatSearch;
 
+use phpQuery;
+
 /**
  * DataParse
  * 
@@ -31,13 +33,17 @@ class DataParse
      *
      * @var array
      */
-    private $_parseConfig = [
+    private static $_parseConfig = [
         'account'   => [
-            [
-                'setter'  => 'setName',
-                'desc'    => '名字',
-                'extra'   => '',
-                'default' => '' 
+            'container' => '.news-box>ul',
+            'item'      => 'li',
+            'field'     => [
+                [
+                    'setter'  => 'setName',
+                    'desc'    => '名字',
+                    'extra'   => '',
+                    'default' => '' 
+                ]
             ]
         ],
         'article'   => [
@@ -50,9 +56,9 @@ class DataParse
      * 
      * @return Array
      */ 
-    public function getParseConfig()
+    public static function getParseConfig()
     {
-        return $this->_parseConfig;
+        return self::$_parseConfig;
     }
 
     /**
@@ -62,8 +68,33 @@ class DataParse
      * 
      * @return Config List
      */
-    public function parseAccounts($content)
+    public static function parseAccounts($content)
     {
+        $reuslt = [];
+        $config = self::getParseConfig()['account'];
+        $doc = phpQuery::newDocumentHTML($content, $charset = "utf-8");
+
+        $container = pq($config['container']);
+        foreach (pq('li', $container) as $li) {
+            $infoSturct = pq($li);
+            $account = new Account();
+            foreach ($config['field'] as $item) {
+                //提取数据
+                $setter = $item['setter'];
+                $value = pq($item['extra'], $infoSturct)->text();
+
+                //没有获取到数据,设置默认值
+                if (empty($value) && isset($item['default'])) {
+                    $value = $item['default'];
+                }
+
+                // 保存值
+                $account->$setter($value);
+            }
+            $list[] = $account;
+        }
+        // $items = pq("div.news-box >ul >li")->html();
+        var_dump($list);
 
     }
 }

@@ -97,9 +97,10 @@ class WechatSearch
         } else {
             $content = $this->_getCache('test');
         }
-        var_dump($content);
-        die();
+        
         $result = DataParse::parseAccounts($content);
+        var_dump($result);
+        die();
         $this->_setCache($key, json_encode($request, JSON_UNESCAPED_UNICODE));
         return $result;
     }
