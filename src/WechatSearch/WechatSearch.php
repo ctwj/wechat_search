@@ -88,19 +88,17 @@ class WechatSearch
      */
     public function searchAccounts($keyword)
     {
-        // $key = 'searchAccounts.'.$keyword;
-        // if ($this->_cacheValid($key)) {
-        //     return json_decode($this->getCache($key), true);
-        // }
-        if (!$this->_cacheValid('test')) {
-            $content = $this->_getContent($this->_makeUrl('searchAccounts', ['keyword'=>$keyword]));
-        } else {
-            $content = $this->_getCache('test');
+        $key = 'searchAccounts.'.$keyword;
+        if ($this->_cacheValid($key)) {
+            return json_decode($this->getCache($key), true);
         }
-        
+        // if (!$this->_cacheValid('test')) {
+        //     $content = $this->_getContent($this->_makeUrl('searchAccounts', ['keyword'=>$keyword]));
+        // } else {
+        //     $content = $this->_getCache('test');
+        // }
+        $content = $this->_getContent($this->_makeUrl('searchAccounts', ['keyword'=>$keyword]));
         $result = DataParse::parseAccounts($content);
-        var_dump($result);
-        die();
         $this->_setCache($key, json_encode($request, JSON_UNESCAPED_UNICODE));
         return $result;
     }

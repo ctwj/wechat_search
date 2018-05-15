@@ -40,6 +40,12 @@ class Account
      */
     private $_wechatName;
     /**
+     * 公众号临时链接
+     *
+     * @var string
+     */
+    private $_accountTempLink;
+    /**
      * Logo
      *
      * @var string
@@ -57,6 +63,12 @@ class Account
      * @var string
      */
     private $_recentArticle;
+    /**
+     * 最近的文章临时链接
+     *
+     * @var string
+     */
+    private $_rencentArticleLink;
     /**
      * 公司
      *
@@ -234,6 +246,54 @@ class Account
     public function setArticleNumber($_articleNumber)
     {
         $this->_articleNumber = $_articleNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get 公众号临时链接
+     *
+     * @return  string
+     */ 
+    public function getAccountTempLink()
+    {
+        return $this->_accountTempLink;
+    }
+
+    /**
+     * Set 公众号临时链接
+     *
+     * @param string $_accountTempLink  公众号临时链接
+     *
+     * @return self
+     */ 
+    public function setAccountTempLink(string $_accountTempLink)
+    {
+        $this->_accountTempLink = $_accountTempLink;
+
+        return $this;
+    }
+
+    /**
+     * Get 最近的文章临时链接
+     *
+     * @return string
+     */ 
+    public function getRencentArticleLink()
+    {
+        return $this->_rencentArticleLink;
+    }
+
+    /**
+     * Set 最近的文章临时链接
+     *
+     * @param string $_rencentArticleLink  最近的文章临时链接
+     *
+     * @return self
+     */ 
+    public function setRencentArticleLink(string $_rencentArticleLink)
+    {
+        $this->_rencentArticleLink = $_rencentArticleLink;
 
         return $this;
     }
