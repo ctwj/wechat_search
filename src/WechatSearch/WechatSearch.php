@@ -16,6 +16,7 @@
 namespace Ctwj\WechatSearch;
 
 use Requests;
+use Ctwj\WechatSearch\Abstracts;
 
 /**
  * WechatSearch class
@@ -82,26 +83,95 @@ class WechatSearch
     /**
      * 搜索公众号
      *
-     * @param string $keyword 关键字
+     * @param mix $param 关键字 或 请求参数 或参数数组
      * 
      * @return Array 公众号列表
      */
-    public function searchAccounts($keyword)
+    public function searchAccounts($param)
     {
-        $key = 'searchAccounts.'.$keyword;
-        if ($this->_cacheValid($key)) {
-            return json_decode($this->getCache($key), true);
+        // 默认第一页, 如果是传递的请求链接,则从链接中取页数
+        $page = 1;
+        if (is_array($param)) {
+            if (!isset($param['keyword'])) {
+                throw new \Exception('Invalid Param, need [keyword]');
+            }
+            $page = $param['page'] ?? 1;
+            $keyword = $param['keyword'];
+            $request_param = ['keyword'=>$keyword, 'page'=>$page];
+        } else {
+            if ($param[0] == '?') {
+                $url = urldecode($param);
+                $request_param = ['queryString' => $url];
+                if (preg_match('/(\?|&)page=(\d+)($|&)/', $url, $matches)) {
+                    $page = $matches[2];
+                }
+                if (preg_match('/(\?|&)query=(.*?)($|&)/', $url, $matches)) {
+                    $keyword = trim($matches[2]);
+    
+                }
+            } else {
+                $request_param = ['keyword'=>$param,'page'=>1];
+            }
         }
-        // if (!$this->_cacheValid('test')) {
-        //     $content = $this->_getContent($this->_makeUrl('searchAccounts', ['keyword'=>$keyword]));
-        // } else {
-        //     $content = $this->_getCache('test');
-        // }
-        $content = $this->_getContent($this->_makeUrl('searchAccounts', ['keyword'=>$keyword]));
+        
+        
+        $key = 'searchAccounts.'.$keyword.'.'.$page;
+
+        if ($this->_cacheValid($key)) {
+            return json_decode($this->_getCache($key), true);
+        }
+        $content = $this->_getContent($this->_makeUrl('searchAccounts', $request_param));
         $result = DataParse::parseAccounts($content);
-        $this->_setCache($key, json_encode($request, JSON_UNESCAPED_UNICODE));
+        $this->_setCache($key, json_encode($result, JSON_UNESCAPED_UNICODE));
         return $result;
     }
+
+    /**
+     * 搜索文章
+     *
+     * @param mix $param 关键字 或 请求参数 或参数数组
+     * 
+     * @return Array 公众号列表
+     */
+    public function searchAritcles($param)
+    {
+        // 默认第一页, 如果是传递的请求链接,则从链接中取页数
+        $page = 1;
+        if (is_array($param)) {
+            if (!isset($param['keyword'])) {
+                throw new \Exception('Invalid Param, need [keyword]');
+            }
+            $page = $param['page'] ?? 1;
+            $keyword = $param['keyword'];
+            $request_param = ['keyword'=>$keyword, 'page'=>$page];
+        } else {
+            if ($param[0] == '?') {
+                $url = urldecode($param);
+                $request_param = ['queryString' => $url];
+                if (preg_match('/(\?|&)page=(\d+)($|&)/', $url, $matches)) {
+                    $page = $matches[2];
+                }
+                if (preg_match('/(\?|&)query=(.*?)($|&)/', $url, $matches)) {
+                    $keyword = trim($matches[2]);
+    
+                }
+            } else {
+                $request_param = ['keyword'=>$param,'page'=>1];
+            }
+        }
+        
+        $key = 'searchArticles.'.$keyword.'.'.$page;
+       
+
+        if ($this->_cacheValid($key)) {
+            return json_decode($this->_getCache($key), true);
+        }
+        $content = $this->_getContent($this->_makeUrl('searchArticles', $request_param));
+        $result = DataParse::parseAbstricts($content);
+        $this->_setCache($key, json_encode($result, JSON_UNESCAPED_UNICODE));
+        return $result;
+    }
+
 
     /**
      * 获取请求链接
@@ -115,9 +185,15 @@ class WechatSearch
     private function _makeUrl(string $type, $param=null)
     {
         $url_config = [
-            'searchAccounts' =>[
-                'url'=>'http://weixin.sogou.com/weixin?type=1&query=KEYWORD&ie=utf8',
+            'searchAccounts' => [
+                'base' => 'http://weixin.sogou.com/weixin',
+                'url' => '?type=1&query=KEYWORD&ie=utf8',
                 'replace'=>['keyword'=>'KEYWORD']
+            ],
+            'searchArticles' => [
+                'base' => 'http://wx.sogou.com/weixin',
+                'url' => '?type=2&s_from=input&query=KEYWORD&ie=utf8&_sug_=n&_sug_type_=',
+                'replace' => ['keyword'=>'KEYWORD']
             ]
 
         ];
@@ -125,7 +201,12 @@ class WechatSearch
             throw new \Exception('Invalid operate!' . $type);
         }
         $config = $url_config[$type];
-        $url = $config['url'];
+        //链接
+        if (isset($param['queryString'])) {
+            return $config['base'] . $param['queryString'];
+        }
+        //关键字
+        $url = $config['base'].$config['url'];
         if (isset($config['replace']) && is_array($config['replace'])) {
             foreach ($config['replace'] as $key=>$value) {
                 if (isset($param[$key])) {

@@ -35,12 +35,13 @@ class DataParse
      */
     private static $_parseConfig = [
         'account'   => [
+            'class' => 'Account',
             'page'  => [
                 'count' => '.mun',
                 'count_clean' => ['找到约','条结果',','],
                 'current_page' => '#pagebar_container > span',
                 'list'=> [
-                    'item' => 'a',
+                    'item' => '#pagebar_container > a',
                     'link' => 'href',
                     'page' => 'test'
                 ]
@@ -98,6 +99,65 @@ class DataParse
                 ]
             ]
         ],
+        'list' => [
+            'class' => 'Abstracts',
+            'page'  => [
+                'count' => '.mun',
+                'count_clean' => ['找到约','条结果',','],
+                'current_page' => '#pagebar_container > span',
+                'list'=> [
+                    'item' => '#pagebar_container > a',
+                    'link' => 'href',
+                    'page' => 'test'
+                ]
+            ],
+            'container' => '.news-box>ul',
+            'item'      => 'li',
+            'field'     => [
+                [
+                    'setter'  => 'setTitle',
+                    'desc'    => '标题',
+                    'xpath'   => 'div.txt-box >h3 >a',
+                    'extra'   => 'text'
+                ],
+                [
+                    'setter' => 'setDescription',
+                    'desc'   => '描述',
+                    'xpath'  => 'p.txt-info',
+                    'extra'  => 'text'
+                ],
+                [
+                    'setter' => 'setCover',
+                    'desc'   => '图片',
+                    'xpath'  => 'div.img-box > a > img',
+                    'extra'  => 'src'
+                ],
+                [
+                    'setter' => 'setArticleLink',
+                    'desc'   => '文章链接',
+                    'xpath'  => 'div.img-box > a',
+                    'extra'  => 'href'
+                ],
+                [
+                    'setter' => 'setPublishTime',
+                    'desc'   => '发布时间',
+                    'xpath'  => 'div.s-p',
+                    'extra'  => 't'
+                ],
+                [
+                    'setter' => 'setAccount',
+                    'desc'   => '帐号',
+                    'xpath'  => 'div.s-p > a',
+                    'extra'  => 'text'
+                ],
+                [
+                    'setter' => 'setAccountLink',
+                    'desc'   => '公众号临时链接',
+                    'xpath'  => 'div.s-p > a',
+                    'extra'  => 'href'
+                ]
+            ]
+        ],
         'article'   => [
 
         ]
@@ -128,6 +188,19 @@ class DataParse
     public static function parseAccounts($content)
     {
         $result = self::_parse(self::getParseConfig('account'), $content);
+        return $result;
+    }
+
+    /**
+     * 解析文章列表
+     *
+     * @param string $content 内容
+     * 
+     * @return Config List
+     */
+    public static function parseAbstricts($content)
+    {
+        $result = self::_parse(self::getParseConfig('list'), $content);
         return $result;
     }
 
@@ -169,7 +242,7 @@ class DataParse
         $container = pq($config['container']);
         foreach (pq('li', $container) as $li) {
             $infoSturct = pq($li);
-            $account = new Account();
+            $info = InfoFactory::getInstance($config['class']);
             foreach ($config['field'] as $item) {
                 //提取数据
                 $setter = $item['setter'];
@@ -186,9 +259,9 @@ class DataParse
                 }
 
                 // 保存值
-                $account->$setter($value);
+                $info->$setter($value);
             }
-            $list[] = $account;
+            $list[] = $info;
         }
         
         return  [
@@ -197,5 +270,38 @@ class DataParse
             'page_list'    => $page_list,     
             'list' =>$list
         ];
+    }
+}
+
+/**
+ * InfoFactory
+ * 
+ * @category PHP
+ * @package  WechatSearch
+ * @author   ctwj <908504609@qq.com>
+ * @license  MIT https://github.com/ctwj/wechat_search/blob/master/LICENSE
+ * @link     https://github.com/ctwj/wechat_search/
+ */
+class InfoFactory
+{
+    /**
+     * 获取实例化类
+     *
+     * @param string $class 类名
+     * 
+     * @return void
+     */
+    public static function getInstance($class)
+    {
+        switch ($class)
+        {
+        case 'Abstracts':
+            return new Abstracts();
+        case 'Account':
+            return new Account();
+        default:
+            throw new \Exception('Invalid Class Name');
+        }
+
     }
 }

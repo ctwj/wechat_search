@@ -14,6 +14,7 @@
  */
 
 use Ctwj\WechatSearch\WechatSerch;
+use Ctwj\WechatSearch\Abstracts;
 
 require '../vendor/autoload.php';
 
@@ -24,10 +25,25 @@ require '../vendor/autoload.php';
  */
 function exampleSearchAccount()
 {
-    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->searchAccounts('童话');
+    
+    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->searchAccounts('?query=%E7%AB%A5%E8%AF%9D&type=1&page=8&ie=utf8');
+    // $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->searchAccounts('童话');
     return $result;
 };
 
-$out = exampleSearchAccount();
+/**
+ * Example for searchArticles
+ *
+ * @return void
+ */
+function exampleSearchArticles()
+{
+    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->searchAritcles('?query=%E7%AB%A5%E8%AF%9D&type=2&page=8&ie=utf8');
+    return $result;
+}
+
+// $out = exampleSearchAccount();
+$out = exampleSearchArticles();
+// $out = new Abstracts();
 var_dump($out);
 

@@ -32,55 +32,55 @@ class Account
      *
      * @var string
      */
-    private $_name;
+    public $name;
     /**
      * 微信号
      *
      * @var string
      */
-    private $_wechatName;
+    public $wechatName;
     /**
      * 公众号临时链接
      *
      * @var string
      */
-    private $_accountTempLink;
+    public $accountTempLink;
     /**
      * Logo
      *
      * @var string
      */
-    private $_logo;
+    public $logo;
     /**
      * 描述
      *
      * @var string
      */
-    private $_description;
+    public $description;
     /**
      * 最近的文章
      *
      * @var string
      */
-    private $_recentArticle;
+    public $recentArticle;
     /**
      * 最近的文章临时链接
      *
      * @var string
      */
-    private $_rencentArticleLink;
+    public $rencentArticleLink;
     /**
      * 公司
      *
      * @var string
      */
-    private $_company;
+    public $company;
     /**
      * 本月发文数
      *
      * @var [type]
      */
-    private $_articleNumber;
+    public $articleNumber;
 
     /**
      * Get 名字
@@ -89,19 +89,19 @@ class Account
      */ 
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
      * Set 名字
      *
-     * @param string $_name 名字
+     * @param string $name 名字
      *
      * @return self
      */ 
-    public function setName(string $_name)
+    public function setName(string $name)
     {
-        $this->_name = $_name;
+        $this->name = $name;
 
         return $this;
     }
@@ -113,19 +113,19 @@ class Account
      */ 
     public function getWechatName()
     {
-        return $this->_wechatName;
+        return $this->wechatName;
     }
 
     /**
      * Set 微信号
      *
-     * @param string $_wechatName 微信号
+     * @param string $wechatName 微信号
      *
      * @return self
      */ 
-    public function setWechatName(string $_wechatName)
+    public function setWechatName(string $wechatName)
     {
-        $this->_wechatName = $_wechatName;
+        $this->wechatName = $wechatName;
 
         return $this;
     }
@@ -137,19 +137,19 @@ class Account
      */ 
     public function getLogo()
     {
-        return $this->_logo;
+        return $this->logo;
     }
 
     /**
      * Set logo
      *
-     * @param string $_logo Logo
+     * @param string $logo Logo
      *
      * @return self
      */ 
-    public function setLogo(string $_logo)
+    public function setLogo(string $logo)
     {
-        $this->_logo = $_logo;
+        $this->logo = $logo;
 
         return $this;
     }
@@ -161,19 +161,19 @@ class Account
      */ 
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
 
     /**
      * Set 描述
      *
-     * @param string $_description 描述
+     * @param string $description 描述
      *
      * @return self
      */ 
-    public function setDescription(string $_description)
+    public function setDescription(string $description)
     {
-        $this->_description = $_description;
+        $this->description = $description;
 
         return $this;
     }
@@ -185,19 +185,19 @@ class Account
      */ 
     public function getRecentArticle()
     {
-        return $this->_recentArticle;
+        return $this->recentArticle;
     }
 
     /**
      * Set 最近的文章
      *
-     * @param string $_recentArticle 最近的文章
+     * @param string $recentArticle 最近的文章
      *
      * @return self
      */ 
-    public function setRecentArticle(string $_recentArticle)
+    public function setRecentArticle(string $recentArticle)
     {
-        $this->_recentArticle = $_recentArticle;
+        $this->recentArticle = $recentArticle;
 
         return $this;
     }
@@ -209,19 +209,19 @@ class Account
      */ 
     public function getCompany()
     {
-        return $this->_company;
+        return $this->company;
     }
 
     /**
      * Set 公司
      *
-     * @param string $_company 公司
+     * @param string $company 公司
      *
      * @return self
      */ 
-    public function setCompany(string $_company)
+    public function setCompany(string $company)
     {
-        $this->_company = $_company;
+        $this->company = $company;
 
         return $this;
     }
@@ -233,19 +233,19 @@ class Account
      */ 
     public function getArticleNumber()
     {
-        return $this->_articleNumber;
+        return $this->articleNumber;
     }
 
     /**
      * Set 本月发文数
      *
-     * @param [type] $_articleNumber 本月发文数
+     * @param [type] $articleNumber 本月发文数
      *
      * @return self
      */ 
-    public function setArticleNumber($_articleNumber)
+    public function setArticleNumber($articleNumber)
     {
-        $this->_articleNumber = $_articleNumber;
+        $this->articleNumber = $articleNumber;
 
         return $this;
     }
@@ -253,23 +253,23 @@ class Account
     /**
      * Get 公众号临时链接
      *
-     * @return  string
+     * @return string
      */ 
     public function getAccountTempLink()
     {
-        return $this->_accountTempLink;
+        return $this->accountTempLink;
     }
 
     /**
      * Set 公众号临时链接
      *
-     * @param string $_accountTempLink  公众号临时链接
+     * @param string $accountTempLink 公众号临时链接
      *
      * @return self
      */ 
-    public function setAccountTempLink(string $_accountTempLink)
+    public function setAccountTempLink(string $accountTempLink)
     {
-        $this->_accountTempLink = $_accountTempLink;
+        $this->accountTempLink = $accountTempLink;
 
         return $this;
     }
@@ -281,20 +281,40 @@ class Account
      */ 
     public function getRencentArticleLink()
     {
-        return $this->_rencentArticleLink;
+        return $this->rencentArticleLink;
     }
 
     /**
      * Set 最近的文章临时链接
      *
-     * @param string $_rencentArticleLink  最近的文章临时链接
+     * @param string $rencentArticleLink 最近的文章临时链接
      *
      * @return self
      */ 
-    public function setRencentArticleLink(string $_rencentArticleLink)
+    public function setRencentArticleLink(string $rencentArticleLink)
     {
-        $this->_rencentArticleLink = $_rencentArticleLink;
+        $this->rencentArticleLink = $rencentArticleLink;
 
         return $this;
+    }
+
+    /**
+     * 字符串转换
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $data = [
+            'name'  => $this->getName(),
+            'wechatName' => $this->getWechatName(),
+            'logo'  => $this->getLogo(),
+            'accountTempLink' => $this->getAccountTempLink(),
+            'company'   => $this->getCompany(),
+            'description' => $this->getDescription(),
+            'rencentArticle' => $this->getRencentArticle(),
+            'rencentArticleLink' => $this->getRencentArticleLink(),
+        ];
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 }
