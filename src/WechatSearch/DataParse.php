@@ -159,7 +159,27 @@ class DataParse
             ]
         ],
         'article'   => [
-
+            'class' => 'Article',
+            'field'     => [
+                [
+                    'setter'  => 'setTitle',
+                    'desc'    => '标题',
+                    'xpath'   => 'h2.rich_media_title',
+                    'extra'   => 'text'
+                ],
+                [
+                    'setter' => 'setContent',
+                    'desc'   => '内容',
+                    'xpath'  => 'div.rich_media_content',
+                    'extra'  => 'html'
+                ],
+                [
+                    'setter' => 'setPublishTime',
+                    'desc'   => '发布时间',
+                    'xpath'  => 'publish_time',
+                    'extra'  => 'src'
+                ]
+            ]
         ]
     ];
     
@@ -202,6 +222,33 @@ class DataParse
     {
         $result = self::_parse(self::getParseConfig('list'), $content);
         return $result;
+    }
+
+    /**
+     * 解析文章内容
+     *
+     * @param string $content 内容
+     * 
+     * @return Artile
+     */
+    public static function parseArticle($content)
+    {
+        phpQuery::newDocumentHTML($content, $charset = "utf-8");
+        $config = self::getParseConfig('article');
+        $article = new Article();
+        foreach ( $config['field'] as $item) {
+            $setter = $item['setter'];
+            $pq = pq($item['xpath']);
+            if ($item['extra'] == 'text') {
+                $value = $pq->text();
+            } elseif ($item['extra'] == 'html') {
+                $value = trim($pq->html());
+            } else {
+                $value = $pq->attr($item['extra']);
+            }
+            $article->$setter($value);
+        }
+        return $article;
     }
 
     /**

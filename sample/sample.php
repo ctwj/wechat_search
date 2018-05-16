@@ -42,8 +42,20 @@ function exampleSearchArticles()
     return $result;
 }
 
+/**
+ * Example for getArticle
+ *
+ * @return void
+ */
+function exampleGetArticle()
+{
+    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->getArticle('https://mp.weixin.qq.com/s?src=11&timestamp=1526475601&ver=880&signature=VoAelDoH-qzaHc2nm-FR5GSX8X8G0sFPTozHV-D2x*GeQyeqVML2BtMWO*jgpC9WRNODrn1*3RGw0EedFtPzodUXIIcj7JyZOjUy2Wy8PnKOOLwPG06uNdkxWkXl7gpt&new=1');
+    return $result;
+}
+
 // $out = exampleSearchAccount();
-$out = exampleSearchArticles();
-// $out = new Abstracts();
+// $out = exampleSearchArticles();
+$out = exampleGetArticle();
+
 var_dump($out);
 

@@ -172,6 +172,20 @@ class WechatSearch
         return $result;
     }
 
+    /**
+     * 获取文章接口
+     *
+     * @param string $url 链接
+     * 
+     * @return void
+     */
+    public function getArticle($url)
+    {
+        $content = $this->_getContent($url);
+        $result = DataParse::parseArticle($content);
+        return $result;
+    }
+
 
     /**
      * 获取请求链接
