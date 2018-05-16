@@ -16,6 +16,7 @@
 namespace Ctwj\WechatSearch;
 
 use phpQuery;
+use \ForceUTF8\Encoding;
 
 /**
  * DataParse
@@ -233,7 +234,8 @@ class DataParse
      */
     public static function parseArticle($content)
     {
-        phpQuery::newDocumentHTML($content, $charset = "utf-8");
+        $content = Encoding::toUTF8($content);
+        phpQuery::newDocumentHTML($content, "utf-8");
         $config = self::getParseConfig('article');
         $article = new Article();
         foreach ( $config['field'] as $item) {
@@ -243,6 +245,8 @@ class DataParse
                 $value = $pq->text();
             } elseif ($item['extra'] == 'html') {
                 $value = trim($pq->html());
+                // file_put_contents('/Users/kerwin/Documents/GitHub/wechat_search/src/cache/a',
+                // json_encode($value, JSON_UNESCAPED_UNICODE));
             } else {
                 $value = $pq->attr($item['extra']);
             }
