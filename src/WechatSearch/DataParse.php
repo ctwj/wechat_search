@@ -234,7 +234,7 @@ class DataParse
      */
     public static function parseArticle($content)
     {
-        $content = Encoding::toUTF8($content);
+        // $content = Encoding::toUTF8($content);
         phpQuery::newDocumentHTML($content, "utf-8");
         $config = self::getParseConfig('article');
         $article = new Article();

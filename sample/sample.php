@@ -13,10 +13,14 @@
  * @modifyby ctwj
  */
 
-use Ctwj\WechatSearch\WechatSerch;
-use Ctwj\WechatSearch\Abstracts;
-
 require '../vendor/autoload.php';
+
+use Ctwj\WechatSearch\WechatSearch;
+use Ctwj\WechatSearch\Abstracts;
+// use phpQuery;
+use \ForceUTF8\Encoding;
+
+
 
 /**
  * Example for searchAccount
@@ -49,8 +53,33 @@ function exampleSearchArticles()
  */
 function exampleGetArticle()
 {
-    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->getArticle('https://mp.weixin.qq.com/s?timestamp=1526483434&src=3&ver=1&signature=T2mwySr8Ekhp3WFVNttkqQt0Ug-DyopJkTgLk95AHr1rffwwt5g-8moPIiMWA81XxaZvGE2w284H9dhovDYa9MRId-05tooAUkl9pnc37tNLbW2oFP7Gdpa37tAtNvdSjbeiy5NGdfYT*4EZUp1-ySGyDd384bnSPy1TAfbT10k=');
-    return $result;
+    // $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->getArticle('https://mp.weixin.qq.com/s?src=11&timestamp=1526515201&ver=881&signature=QVKAL2DJcEMR*gS0X3inuw7YJzauCM2xZicbWsFn*XSrFWco6wtI1neGx6HlE5S7uuZJnOQO*KV9iW3ZNBmbyFAVXvIiAROOzYY3m3t2ZqzDuhV97kSXr44yZBJxkKIk&new=1');
+    $config = new \Ctwj\WechatSearch\Config([]);
+    $file = $config->getCachePath() . 'test.html';
+    echo $file;
+    if (!file_exists($file)) {
+        $url = 'https://mp.weixin.qq.com/s?src=11&timestamp=1526515201&ver=881&signature=QVKAL2DJcEMR*gS0X3inuw7YJzauCM2xZicbWsFn*XSrFWco6wtI1neGx6HlE5S7uuZJnOQO*KV9iW3ZNBmbyFAVXvIiAROOzYY3m3t2ZqzDuhV97kSXr44yZBJxkKIk&new=1';
+        $content = file_get_contents($url);
+        file_put_contents($file, $content);
+    } else {
+        $content = file_get_contents($file);
+    }
+    
+    if (preg_match('/<h2\sclass=\"rich_media_title.*?>(.*?)<\/h2>/is', $content, $matches)) {
+        $title = trim($matches[1]);
+    }
+    if (preg_match('/id=\"js_content\">(.*?)<\/div>/is', $content, $matches)) {
+        $article = trim($matches[1]);
+    }
+    
+    if (preg_match('/微信号<\/label>.*?>(.*?)<\/span>/is', $content, $matches)) {
+        $wechatName = trim($matches[1]);
+    }
+    
+    // phpQuery::newDocumentHTML($content, "utf-8");
+    // $name = pq('.rich_media_content')->text();
+    var_dump($title, $wechatName);
+
 }
 
 // $out = exampleSearchAccount();
