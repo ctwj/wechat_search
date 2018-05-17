@@ -356,6 +356,7 @@ class DataParse
      * 编码转换
      *
      * @param [type] $value 需要编码在内容
+     * 
      * @return void
      */
     private static function _convertEncoding($value)

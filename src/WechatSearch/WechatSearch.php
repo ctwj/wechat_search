@@ -83,14 +83,15 @@ class WechatSearch
     /**
      * 搜索公众号
      *
-     * @param mix $param 关键字 或 请求参数 或参数数组
+     * @param mix     $param 关键字 或 请求参数 或参数数组
+     * @param integer $page  页码
      * 
      * @return Array 公众号列表
      */
-    public function searchAccounts($param)
+    public function searchAccounts($param, $page=null)
     {
         // 默认第一页, 如果是传递的请求链接,则从链接中取页数
-        $page = 1;
+        $page = $page ?? 1;
         if (is_array($param)) {
             if (!isset($param['keyword'])) {
                 throw new \Exception('Invalid Param, need [keyword]');
@@ -129,14 +130,15 @@ class WechatSearch
     /**
      * 搜索文章
      *
-     * @param mix $param 关键字 或 请求参数 或参数数组
+     * @param mix     $param 关键字 或 请求参数 或参数数组
+     * @param integer $page  页码
      * 
      * @return Array 公众号列表
      */
-    public function searchAritcles($param)
+    public function searchArticles($param, $page=null)
     {
         // 默认第一页, 如果是传递的请求链接,则从链接中取页数
-        $page = 1;
+        $page = $page ?? 1;
         if (is_array($param)) {
             if (!isset($param['keyword'])) {
                 throw new \Exception('Invalid Param, need [keyword]');
