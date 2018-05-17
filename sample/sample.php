@@ -56,7 +56,7 @@ function exampleGetArticle()
     // $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->getArticle('https://mp.weixin.qq.com/s?src=11&timestamp=1526515201&ver=881&signature=QVKAL2DJcEMR*gS0X3inuw7YJzauCM2xZicbWsFn*XSrFWco6wtI1neGx6HlE5S7uuZJnOQO*KV9iW3ZNBmbyFAVXvIiAROOzYY3m3t2ZqzDuhV97kSXr44yZBJxkKIk&new=1');
     $config = new \Ctwj\WechatSearch\Config([]);
     $file = $config->getCachePath() . 'test.html';
-    echo $file;
+    // echo $file;
     if (!file_exists($file)) {
         $url = 'https://mp.weixin.qq.com/s?src=11&timestamp=1526515201&ver=881&signature=QVKAL2DJcEMR*gS0X3inuw7YJzauCM2xZicbWsFn*XSrFWco6wtI1neGx6HlE5S7uuZJnOQO*KV9iW3ZNBmbyFAVXvIiAROOzYY3m3t2ZqzDuhV97kSXr44yZBJxkKIk&new=1';
         $content = file_get_contents($url);
@@ -64,21 +64,26 @@ function exampleGetArticle()
     } else {
         $content = file_get_contents($file);
     }
-    
-    if (preg_match('/<h2\sclass=\"rich_media_title.*?>(.*?)<\/h2>/is', $content, $matches)) {
-        $title = trim($matches[1]);
-    }
-    if (preg_match('/id=\"js_content\">(.*?)<\/div>/is', $content, $matches)) {
-        $article = trim($matches[1]);
-    }
-    
+
+    $result = \Ctwj\WechatSearch\DataParse::parseArticle($content);
+    return $result;
+    // if (preg_match('/msg_title\s=\s\"(.*?)\";/is', $content, $matches)) {
+    //     $title = trim($matches[1]);
+    // }
+    // if (preg_match('/msg_cdn_url\s=\s\"(.*?)\";/is', $content, $matches)) {
+    //     $cover = trim($matches[1]);
+    // }
+    // if (preg_match('/id=\"js_content\">(.*?)<\/div>/is', $content, $matches)) {
+    //     $article = trim($matches[1]);
+    // }
+    /*
     if (preg_match('/微信号<\/label>.*?>(.*?)<\/span>/is', $content, $matches)) {
         $wechatName = trim($matches[1]);
     }
-    
-    // phpQuery::newDocumentHTML($content, "utf-8");
-    // $name = pq('.rich_media_content')->text();
-    var_dump($title, $wechatName);
+    if (preg_match('/publish_time\"\s.*?>(.*?)<\/em>/', $content, $matches)) {
+        $pulishTime = trim($matches[1]);
+    } 
+    */
 
 }
 

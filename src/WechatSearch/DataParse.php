@@ -235,22 +235,28 @@ class DataParse
     public static function parseArticle($content)
     {
         // $content = Encoding::toUTF8($content);
-        phpQuery::newDocumentHTML($content, "utf-8");
-        $config = self::getParseConfig('article');
+        // phpQuery::newDocumentHTML($content, "utf-8");
+        // $config = self::getParseConfig('article');
         $article = new Article();
-        foreach ( $config['field'] as $item) {
-            $setter = $item['setter'];
-            $pq = pq($item['xpath']);
-            if ($item['extra'] == 'text') {
-                $value = $pq->text();
-            } elseif ($item['extra'] == 'html') {
-                $value = trim($pq->html());
-                // file_put_contents('/Users/kerwin/Documents/GitHub/wechat_search/src/cache/a',
-                // json_encode($value, JSON_UNESCAPED_UNICODE));
-            } else {
-                $value = $pq->attr($item['extra']);
-            }
-            $article->$setter($value);
+        if (preg_match('/msg_title\s=\s\"(.*?)\";/is', $content, $matches)) {
+            $title = trim($matches[1]);
+            $article->setTitle($title);
+        }
+        if (preg_match('/msg_cdn_url\s=\s\"(.*?)\";/is', $content, $matches)) {
+            $cover = trim($matches[1]);
+            $article->setCover($cover);
+        }
+        if (preg_match('/id=\"js_content\">(.*?)<\/div>/is', $content, $matches)) {
+            $info = trim($matches[1]);
+            $article->setContent($info);
+        }
+        if (preg_match('/微信号<\/label>.*?>(.*?)<\/span>/is', $content, $matches)) {
+            $wechatName = trim($matches[1]);
+            $article->setWechatName($wechatName);
+        }
+        if (preg_match('/publish_time\"\s.*?>(.*?)<\/em>/', $content, $matches)) {
+            $publishTime = trim($matches[1]);
+            $article->setPublishTime($publishTime);
         }
         return $article;
     }

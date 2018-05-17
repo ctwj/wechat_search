@@ -26,9 +26,36 @@
  */
 class Article
 {
+    /**
+     * 标题
+     *
+     * @var string
+     */
     public $title;
+    /**
+     * 发布时间
+     *
+     * @var string
+     */
     public $publishTime;
+    /**
+     * 内容
+     *
+     * @var string
+     */
     public $content;
+    /**
+     * 封面图片
+     *
+     * @var string
+     */
+    public $cover;
+    /**
+     * 微信号
+     *
+     * @var string
+     */
+    public $wechatName;
 
     /**
      * Get the value of title
@@ -98,6 +125,54 @@ class Article
     public function setContent($content)
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get 封面图片
+     *
+     * @return string
+     */ 
+    public function getCover()
+    {
+        return $this->cover;
+    }
+
+    /**
+     * Set 封面图片
+     *
+     * @param string $cover 封面图片
+     *
+     * @return self
+     */ 
+    public function setCover(string $cover)
+    {
+        $this->cover = $cover;
+
+        return $this;
+    }
+
+    /**
+     * Get 微信号
+     *
+     * @return string
+     */ 
+    public function getWechatName()
+    {
+        return $this->wechatName;
+    }
+
+    /**
+     * Set 微信号
+     *
+     * @param string $wechatName 微信号
+     *
+     * @return self
+     */ 
+    public function setWechatName(string $wechatName)
+    {
+        $this->wechatName = $wechatName;
 
         return $this;
     }
