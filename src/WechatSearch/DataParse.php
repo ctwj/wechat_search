@@ -184,7 +184,7 @@ class DataParse
         ],
         'hots' => [
             'class' => 'Abstracts',
-            'container' => '',
+            'container' => '.news-list',
             'item'      => 'li',
             'field'     => [
                 [
@@ -319,8 +319,48 @@ class DataParse
      */
     public static function parseHots($content)
     {
-        $result = self::_parse(self::getParseConfig('list'), $content);
+        $result = self::_parse(self::getParseConfig('hots'), $content);
         return $result;
+    }
+
+    /**
+     * 检测文档编码是否需要转码,
+     * 如果phpQuery没有检查出文档编码,默认会将编码设置成ISO-8859-1
+     *
+     * @param string $content 内容
+     * 
+     * @return void
+     */
+    private static function _needConvertEncoding($content) 
+    {
+        $matches = array();
+        // find meta tag
+        preg_match(
+            '@<meta[^>]+http-equiv\\s*=\\s*(["|\'])Content-Type\\1([^>]+?)>@i',
+            $content, $matches
+        );
+        if (! isset($matches[0])) {
+            return true;
+        }
+
+        // get attr 'content'
+        preg_match('@content\\s*=\\s*(["|\'])(.+?)\\1@', $matches[0], $matches);
+        if (! isset($matches[0])) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * 编码转换
+     *
+     * @param [type] $value 需要编码在内容
+     * @return void
+     */
+    private static function _convertEncoding($value)
+    {
+        return \mb_convert_encoding($value, 'ISO-8859-1', 'utf-8');
     }
 
     /**
@@ -334,13 +374,18 @@ class DataParse
     private static function _parse($config, $content)
     {
         $result = [];
-        $doc = phpQuery::newDocumentHTML($content, $charset = "utf-8");
+        phpQuery::$documents = array();
+        phpQuery::$debug = true;
+        $doc = phpQuery::newDocumentHTML($content, 'UTF-8');
+        $encoding = self::_needConvertEncoding($content);
+        // var_dump($encoding);
 
         // 当前page
         if (isset($config['page'])) {
             $current_page = pq($config['page']['current_page'])->text();
             // 搜索结果
             $num_str = pq($config['page']['count'])->text();
+            $num_str = $encoding ? self::_convertEncoding($num_str):$num_str;
             if (isset($config['page']['count_clean']) && is_array($config['page']['count_clean'])) {
                 foreach ( $config['page']['count_clean'] as $str) {
                     $num_str = str_replace($str, '', $num_str);
@@ -378,10 +423,12 @@ class DataParse
                 $pq = pq($item['xpath'], $infoSturct);
                 if ($item['extra'] == 'text') {
                     $value = $pq->text();
+                    // $value = \mb_convert_encoding($value, 'ISO-8859-1', 'utf-8');
                 } else {
                     $value = $pq->attr($item['extra']);
                 }
 
+                $value = $encoding ? self::_convertEncoding($value):$value;
                 //没有获取到数据,设置默认值
                 if (empty($value) && isset($item['default'])) {
                     $value = $item['default'];

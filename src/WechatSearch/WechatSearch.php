@@ -194,7 +194,7 @@ class WechatSearch
      * 
      * @return void
      */
-    public function getHots($type, $page)
+    public function getHots($type, $page=1)
     {
         $config = self::$_config;
         $type_config = $config->getType();
@@ -206,7 +206,16 @@ class WechatSearch
         }
         $pages = $type_config['pages'][$type];
         $current_page = $page;
-        $content = $this->_getContent($pages[$page]);
+
+        $key = 'getHots.'.$type.'.'.$page;
+        if ($this->_cacheValid($key)) {
+            // return json_decode($this->_getCache($key), true);
+            $content = $this->_getCache($key);
+            
+        } else {
+            $content = $this->_getContent($pages[$page]);
+            $this->_setCache($key, $content);
+        }
         $list = DataParse::parseHots($content);
         return [
             'current_page'  => $current_page,
