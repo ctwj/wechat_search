@@ -87,9 +87,23 @@ function exampleGetArticle()
 
 }
 
+/**
+ * Example for getHots
+ *
+ * @return void
+ */
+function exampleGetHots()
+{
+    
+    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->getHots('育儿', 1);
+    // $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->searchAccounts('童话');
+    return $result;
+};
+
 // $out = exampleSearchAccount();
 // $out = exampleSearchArticles();
-$out = exampleGetArticle();
+// $out = exampleGetArticle();
+$out = exampleGetHots();
 
 var_dump($out);
 

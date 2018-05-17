@@ -186,6 +186,35 @@ class WechatSearch
         return $result;
     }
 
+    /**
+     * 获取热门文章
+     *
+     * @param string $type 类别
+     * @param string $page 页码
+     * 
+     * @return void
+     */
+    public function getHots($type, $page)
+    {
+        $config = self::$_config;
+        $type_config = $config->getType();
+        if (!\in_array($type, $type_config['types'])) {
+            throw new \Exception('invalid type in getHots!');
+        }
+        if ($page<1 || $page >10) {
+            throw new \Exception('invalid page in getHots!');
+        }
+        $pages = $type_config['pages'][$type];
+        $current_page = $page;
+        $content = $this->_getContent($pages[$page]);
+        $list = DataParse::parseHots($content);
+        return [
+            'current_page'  => $current_page,
+            'pages'         => $pages,
+            'data'          => $list
+        ];
+    }
+
 
     /**
      * 获取请求链接

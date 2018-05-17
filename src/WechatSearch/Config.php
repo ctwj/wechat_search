@@ -60,6 +60,14 @@ class Config
     private $_useragent;
 
     /**
+     * 类别
+     *
+     * @var Array
+     */
+    private $_type;
+
+
+    /**
      * 构造函数
      *
      * @param Array $params 参数
@@ -240,4 +248,38 @@ class Config
 
         return $this;
     }
+
+    /**
+     * Get 类别
+     *
+     * @return Array
+     */ 
+    public function getType()
+    {
+        $config = [
+            'type' => [
+                '热门' => 'pc_0','搞笑' => 'pc_1',
+                '养生堂' => 'pc_2','私房话' => 'pc_3',
+                '八卦精' => 'pc_4','科技咖' => 'pc_5',
+                '财经迷' => 'pc_6','汽车控' => 'pc_7',
+                '生活家' => 'pc_8','时尚圈' => 'pc_9',
+                '育儿' => 'pc_10','旅游' => 'pc_11',
+                '职场' => 'pc_12','美食' => 'pc_13',
+                '历史' => 'pc_14','教育' => 'pc_15',
+                '星座' => 'pc_16','体育' => 'pc_17',
+                '军事' => 'pc_18','游戏' => 'pc_19','萌宠' => 'pc_20'
+            ],
+        ];
+        $base_url = 'http://wx.sogou.com/pcindex/pc/';
+        $keys = array_keys($config['type']);
+        $pages = [];
+        foreach ($config['type'] as $key=>$val) {
+            for ( $i=1; $i<11; $i++) {
+                $url = $base_url . $val . '/' . ($i==1?$val:$i) . '.html';
+                $pages[$key][$i] = $url;
+            }
+        }
+        return ['types'=>$keys, 'pages'=>$pages];
+    }
+
 }

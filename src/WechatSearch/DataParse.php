@@ -181,6 +181,55 @@ class DataParse
                     'extra'  => 'src'
                 ]
             ]
+        ],
+        'hots' => [
+            'class' => 'Abstracts',
+            'container' => '',
+            'item'      => 'li',
+            'field'     => [
+                [
+                    'setter'  => 'setTitle',
+                    'desc'    => '标题',
+                    'xpath'   => 'div.txt-box >h3 >a',
+                    'extra'   => 'text'
+                ],
+                [
+                    'setter' => 'setDescription',
+                    'desc'   => '描述',
+                    'xpath'  => 'p.txt-info',
+                    'extra'  => 'text'
+                ],
+                [
+                    'setter' => 'setCover',
+                    'desc'   => '图片',
+                    'xpath'  => 'div.img-box > a > img',
+                    'extra'  => 'src'
+                ],
+                [
+                    'setter' => 'setArticleLink',
+                    'desc'   => '文章链接',
+                    'xpath'  => 'div.img-box > a',
+                    'extra'  => 'href'
+                ],
+                [
+                    'setter' => 'setPublishTime',
+                    'desc'   => '发布时间',
+                    'xpath'  => 'div.s-p',
+                    'extra'  => 't'
+                ],
+                [
+                    'setter' => 'setAccount',
+                    'desc'   => '帐号',
+                    'xpath'  => 'div.s-p > a',
+                    'extra'  => 'text'
+                ],
+                [
+                    'setter' => 'setAccountLink',
+                    'desc'   => '公众号临时链接',
+                    'xpath'  => 'div.s-p > a',
+                    'extra'  => 'href'
+                ]
+            ]
         ]
     ];
     
@@ -262,6 +311,19 @@ class DataParse
     }
 
     /**
+     * 热门文章
+     *
+     * @param string $content 内容
+     * 
+     * @return void
+     */
+    public static function parseHots($content)
+    {
+        $result = self::_parse(self::getParseConfig('list'), $content);
+        return $result;
+    }
+
+    /**
      * 内容解析
      *
      * @param [type] $config  配置
@@ -271,29 +333,39 @@ class DataParse
      */
     private static function _parse($config, $content)
     {
+        $result = [];
         $doc = phpQuery::newDocumentHTML($content, $charset = "utf-8");
 
         // 当前page
-        $current_page = pq($config['page']['current_page'])->text();
-        // 搜索结果
-        $num_str = pq($config['page']['count'])->text();
-        if (isset($config['page']['count_clean']) && is_array($config['page']['count_clean'])) {
-            foreach ( $config['page']['count_clean'] as $str) {
-                $num_str = str_replace($str, '', $num_str);
+        if (isset($config['page'])) {
+            $current_page = pq($config['page']['current_page'])->text();
+            // 搜索结果
+            $num_str = pq($config['page']['count'])->text();
+            if (isset($config['page']['count_clean']) && is_array($config['page']['count_clean'])) {
+                foreach ( $config['page']['count_clean'] as $str) {
+                    $num_str = str_replace($str, '', $num_str);
+                }
             }
-        }
-        // page list
-        $page_list = [];
-        $page_config = $config['page']['list'];
-        foreach (pq($page_config['item']) as $item) {
-            $page = $page_config['page'] == 'src' ?  pq($item)->attr('src') :  pq($item)->text();
-            $page = intval($page);
-            if (\is_numeric($page) && $page>0) {
-                $page_list[] = [
-                    'link'  => $page_config['link'] == 'href' ? pq($item)->attr('href') :  pq($item)->text(),
-                    'page'  => $page
-                ];
+            // page list
+            $page_list = [];
+            $page_config = $config['page']['list'];
+            foreach (pq($page_config['item']) as $item) {
+                $page = $page_config['page'] == 'src' ?  pq($item)->attr('src') :  pq($item)->text();
+                $page = intval($page);
+                if (\is_numeric($page) && $page>0) {
+                    $page_list[] = [
+                        'link'  => $page_config['link'] == 'href' ? pq($item)->attr('href') :  pq($item)->text(),
+                        'page'  => $page
+                    ];
+                }
             }
+
+            $result = [
+                'currnet_page' => $current_page,
+                'count'        => $num_str,
+                'page_list'    => $page_list,     
+                'list' =>$list
+            ];
         }
 
         $container = pq($config['container']);
@@ -320,13 +392,8 @@ class DataParse
             }
             $list[] = $info;
         }
-        
-        return  [
-            'currnet_page' => $current_page,
-            'count'        => $num_str,
-            'page_list'    => $page_list,     
-            'list' =>$list
-        ];
+        $result['list'] = $list;
+        return  $result;
     }
 }
 
