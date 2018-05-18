@@ -16,24 +16,27 @@ composer require ctwj\wechat_search_api
     or
     ```
     $instance = \Ctwj\WechatSearch\WechatSearch::getInstance(
-        'cachePath'   => 'path to save cache',  //缓存路径,结尾需要友分隔符, 默认项目内
-        'cacheTime'   => 10,        //分钟数,为0时关闭代理, 默认十分钟
-        'proxyEnable' => false,     //是否开启代理
-        'proxyObject' => '127.0.0.1:8080', //代理     
-        'useragent'   => [          //数组设置为多个每次随机选择
-            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
-            "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+        [
+            'cachePath'   => 'path to save cache',  //缓存路径,结尾需要友分隔符, 默认项目内
+            'cacheTime'   => 10,        //分钟数,为0时关闭代理, 默认十分钟
+            'proxyEnable' => false,     //是否开启代理
+            'proxyObject' => '127.0.0.1:8080', //代理     
+            'useragent'   => [          //数组设置为多个每次随机选择
+                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
+                "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+            ]
         ]
     );
     ```
     or 
     ```
     $instance = \Ctwj\WechatSearch\WechatSearch::getInstance(
-        'proxyEnable' => false,     //是否开启代理
-        'proxyObject' => [
-            '127.0.0.1:8080',
-            'username',
-            'password'
+        [
+            'proxyEnable' => false,     //是否开启代理
+            'proxyObject' => [
+                '127.0.0.1:8080',
+                'username',
+                'password'
         ]     
     );
     ```
