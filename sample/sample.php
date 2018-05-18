@@ -100,10 +100,10 @@ function exampleGetHots()
     return $result;
 };
 
-// $out = exampleSearchAccount();
+$out = exampleSearchAccount();
 // $out = exampleSearchArticles();
 // $out = exampleGetArticle();
-$out = exampleGetHots();
+// $out = exampleGetHots();
 
 var_dump($out);
 

@@ -298,7 +298,15 @@ class WechatSearch
      */
     private function _cacheValid($key)
     {
-        return file_exists($this->_getCacheFile($key));
+        $file = $this->_getCacheFile($key);
+        if (!file_exists($file)) {
+            return false;
+        }
+
+        // $now = new \DateTime('now', new \DateTimeZone('PRC'));
+        // $stamp = $now->getTimestamp();
+        $time = time();
+        $ctime = filectime($file);
     }
 
     /**
