@@ -376,7 +376,6 @@ class DataParse
     {
         $result = [];
         phpQuery::$documents = array();
-        phpQuery::$debug = true;
         $doc = phpQuery::newDocumentHTML($content, 'UTF-8');
         $encoding = self::_needConvertEncoding($content);
         // var_dump($encoding);
