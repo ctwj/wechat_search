@@ -100,10 +100,22 @@ function exampleGetHots()
     return $result;
 };
 
+/**
+ * Example for getTypes
+ *
+ * @return void
+ */
+function exampleGetTypes()
+{
+    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->getTypes();
+    return $result; 
+}
+
 $out = exampleSearchAccount();
 // $out = exampleSearchArticles();
 // $out = exampleGetArticle();
 // $out = exampleGetHots();
+// $out = exampleGetTypes();
 
 var_dump($out);
 

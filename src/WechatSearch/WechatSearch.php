@@ -226,6 +226,16 @@ class WechatSearch
         ];
     }
 
+    /**
+     * 获取分类
+     *
+     * @return void
+     */
+    public function getTypes()
+    {
+        return self::$_config->getType()['types'];
+    }
+
 
     /**
      * 获取请求链接
@@ -282,7 +292,19 @@ class WechatSearch
      */
     private function _getContent($url)
     {
-        $request = Requests::get($url, array('Accept' => 'application/json'));
+        $useragent = self::$_config->getUseragent();
+        if (count($useragent) == 1) {
+            $header['User-Agent'] = $useragent[0]; 
+        } else {
+            $header['User-Agent'] = $useragent[array_rand($useragent, 1)];
+        }
+
+        $options = [];
+        if (self::$_config->getProxyEnable() && is_null(self::$_config->getProxyObject())) {
+            $options['proxy'] = self::$_config->getProxyObject();
+        }
+        
+        $request = Requests::get($url, $header, $options);
         if ($request->status_code != 200) {
             throw new \Exception('requests url ['.$url.'] fail!');
         }
@@ -298,6 +320,10 @@ class WechatSearch
      */
     private function _cacheValid($key)
     {
+        if (self::$_config->getCacheTime() == 0) {
+            return false;
+        }
+
         $file = $this->_getCacheFile($key);
         if (!file_exists($file)) {
             return false;
@@ -307,6 +333,11 @@ class WechatSearch
         // $stamp = $now->getTimestamp();
         $time = time();
         $ctime = filectime($file);
+        if ($time-$ctime>self::$_config->getCacheTime()*60) {
+            unlink($file);
+            return false;
+        }
+        return true;
     }
 
     /**
