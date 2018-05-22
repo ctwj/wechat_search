@@ -78,7 +78,8 @@ class DataParse
                     'setter' => 'setCompany',
                     'desc'   => '公司名字',
                     'xpath'  => 'dl:eq(1)>dd',
-                    'extra'  => 'text'
+                    'extra'  => 'text',
+                    'not'    => 'dl:eq(1)>dd>a[uigs^=account_article_]'
                 ],
                 [
                     'setter' => 'setRecentArticle',
@@ -419,6 +420,16 @@ class DataParse
             foreach ($config['field'] as $item) {
                 //提取数据
                 $setter = $item['setter'];
+
+                //排除意外
+                if (isset($item['not'])) {
+                    $not = pq($item['xpath'], $infoSturct)->text();
+                    if ($not != '') {
+                        $info->$setter('');
+                        continue;
+                    }
+                }
+
                 $pq = pq($item['xpath'], $infoSturct);
                 if ($item['extra'] == 'text') {
                     $value = $pq->text();
