@@ -432,10 +432,10 @@ class DataParse
 
                 $pq = pq($item['xpath'], $infoSturct);
                 if ($item['extra'] == 'text') {
-                    $value = $pq->text();
+                    $value = trim($pq->text());
                     // $value = \mb_convert_encoding($value, 'ISO-8859-1', 'utf-8');
                 } else {
-                    $value = $pq->attr($item['extra']);
+                    $value = trim($pq->attr($item['extra']));
                 }
 
                 $value = $encoding ? self::_convertEncoding($value):$value;
