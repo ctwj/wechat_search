@@ -408,8 +408,7 @@ class DataParse
             $result = [
                 'currnet_page' => $current_page,
                 'count'        => $num_str,
-                'page_list'    => $page_list,     
-                'list' =>$list
+                'page_list'    => $page_list
             ];
         }
 
