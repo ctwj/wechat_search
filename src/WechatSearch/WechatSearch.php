@@ -159,6 +159,7 @@ class WechatSearch
     
                 }
             } else {
+                $keyword = $param;
                 $request_param = ['keyword'=>$param,'page'=>1];
             }
         }
