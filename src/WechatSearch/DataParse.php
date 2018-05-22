@@ -423,7 +423,7 @@ class DataParse
 
                 //排除意外
                 if (isset($item['not'])) {
-                    $not = pq($item['xpath'], $infoSturct)->text();
+                    $not = pq($item['not'], $infoSturct)->text();
                     if ($not != '') {
                         $info->$setter('');
                         continue;
