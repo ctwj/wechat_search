@@ -2,21 +2,23 @@
     "name": "ctwj/wechat_search_api",
     "type": "library",
     "description": "api for wechat subscribe account and articles by sogou search",
-    "keywords": ["sogou","wechat","search","api"],
+    "keywords": ["sogou", "wechat", "search", "api"],
     "homepage": "http://www.safecode.cc",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "ctwj",
-            "email": "908504609@qq.com",
-            "homepage": "http://www.safecode.cc",
-            "role": "Developer"
-        }
-    ],
+    "authors": [{
+        "name": "ctwj",
+        "email": "908504609@qq.com",
+        "homepage": "http://www.safecode.cc",
+        "role": "Developer"
+    }],
     "require": {
         "php": ">=7.0",
         "jaeger/phpquery-single": "^0.9.9",
         "rmccue/requests": "^1.7"
+    },
+    "require-dev": {
+        "vimeo/psalm": "^2.0",
+        "roave/security-advisories": "dev-master"
     },
     "autoload": {
         "psr-4": {
