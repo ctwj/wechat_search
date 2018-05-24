@@ -317,7 +317,7 @@ class DataParse
      * 
      * @return Config List
      */
-    public static function parseAccountArticles($content)
+    public static function parseAccountArticles($content, $url)
     {
         // wechatName
         $wechatName = '';

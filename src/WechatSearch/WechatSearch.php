@@ -193,7 +193,7 @@ class WechatSearch
         //     $this->_setCache('test', $content);
         // }
         $content = $this->_getContent($url);
-        $result = DataParse::parseAccountArticles($content);
+        $result = DataParse::parseAccountArticles($content, $url);
         return $result;
     }
 
