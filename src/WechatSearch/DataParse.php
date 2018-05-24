@@ -329,19 +329,15 @@ class DataParse
         if (\preg_match('/profile_account">微信号:(.*?)</i', $content, $matches)) {
             $name = trim($matches[1]);
         }
-        try{
-            if (\preg_match('/msgList\s=\s(.*?)(\n|$)/is', $content, $matches)) {
-                $info = $matches[1];
-                $info =  trim(trim($info), ';');
-                $array = \json_decode($info, true);
-                // echo trim($matches[1], ';');
-            } else {
-                die('???');
-                return [];
-            }
-        } catch (\Exception $e) {
-            throw new \Exception('parse Account\'s Articles Fail');
+        
+        if (\preg_match('/msgList\s=\s(.*?)(\n|$)/is', $content, $matches)) {
+            $info = $matches[1];
+            $info =  trim($info, '; ');
+            $array = \json_decode($info, true);
+        } else {
+            throw new \Exception('May be you need open url and input the valid code:' . $url);
         }
+
         $articles = [];
         foreach ($array['list'] as $infos) {
             $time = $infos['comm_msg_info']['datetime'];
