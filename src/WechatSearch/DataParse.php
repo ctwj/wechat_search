@@ -344,7 +344,7 @@ class DataParse
             $data = [
                 'author' => $infos['app_msg_ext_info']['author'],
                 'content_url' => $infos['app_msg_ext_info']['content_url'],
-                'conver'    => $infos['app_msg_ext_info']['cover'],
+                'cover'    => $infos['app_msg_ext_info']['cover'],
                 'source_url' => $infos['app_msg_ext_info']['source_url'],
                 'digest'    => $infos['app_msg_ext_info']['digest'],
                 'title' => $infos['app_msg_ext_info']['title'],
@@ -356,7 +356,7 @@ class DataParse
                 $data = [
                     'author' => $info['author'],
                     'content_url' => $info['content_url'],
-                    'conver'    => $info['cover'],
+                    'cover'    => $info['cover'],
                     'source_url' => $info['source_url'],
                     'digest'    => $info['digest'],
                     'title' => $info['title'],
