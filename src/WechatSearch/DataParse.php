@@ -343,7 +343,7 @@ class DataParse
             $time = $infos['comm_msg_info']['datetime'];
             $data = [
                 'author' => $infos['app_msg_ext_info']['author'],
-                'content_url' => $infos['app_msg_ext_info']['content_url'],
+                'content_url' => 'https://mp.weixin.qq.com' . $infos['app_msg_ext_info']['content_url'],
                 'cover'    => $infos['app_msg_ext_info']['cover'],
                 'source_url' => $infos['app_msg_ext_info']['source_url'],
                 'digest'    => $infos['app_msg_ext_info']['digest'],
@@ -355,7 +355,7 @@ class DataParse
             foreach ($infos['app_msg_ext_info']['multi_app_msg_item_list'] as $info) {
                 $data = [
                     'author' => $info['author'],
-                    'content_url' => $info['content_url'],
+                    'content_url' => 'https://mp.weixin.qq.com' . $info['content_url'],
                     'cover'    => $info['cover'],
                     'source_url' => $info['source_url'],
                     'digest'    => $info['digest'],
