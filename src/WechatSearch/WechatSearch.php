@@ -176,6 +176,27 @@ class WechatSearch
         return $result;
     }
 
+    
+    /**
+     * 获取公众号文章列表接口
+     *
+     * @param string $url 链接
+     * 
+     * @return void
+     */
+    public function accountArticles($url)
+    {
+        // if ($this->_cacheValid('test')) {
+        //     $content = $this->_getCache('test');
+        // } else {
+        //     $content = $this->_getContent($url);
+        //     $this->_setCache('test', $content);
+        // }
+        $content = $this->_getContent($url);
+        $result = DataParse::parseAccountArticles($content);
+        return $result;
+    }
+
     /**
      * 获取文章接口
      *

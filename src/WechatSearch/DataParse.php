@@ -183,6 +183,54 @@ class DataParse
                 ]
             ]
         ],
+        'account_article' => [
+            'container' => 'div.weui_msg_card_list',
+            'item'  => 'div.weui_msg_card',
+            'field'     => [
+                [
+                    'setter'  => 'setTitle',
+                    'desc'    => '标题',
+                    'xpath'   => 'div.txt-box >h3 >a',
+                    'extra'   => 'text'
+                ],
+                [
+                    'setter' => 'setDescription',
+                    'desc'   => '描述',
+                    'xpath'  => 'p.txt-info',
+                    'extra'  => 'text'
+                ],
+                [
+                    'setter' => 'setCover',
+                    'desc'   => '图片',
+                    'xpath'  => 'div.img-box > a > img',
+                    'extra'  => 'src'
+                ],
+                [
+                    'setter' => 'setArticleLink',
+                    'desc'   => '文章链接',
+                    'xpath'  => 'div.img-box > a',
+                    'extra'  => 'href'
+                ],
+                [
+                    'setter' => 'setPublishTime',
+                    'desc'   => '发布时间',
+                    'xpath'  => 'div.s-p',
+                    'extra'  => 't'
+                ],
+                [
+                    'setter' => 'setAccount',
+                    'desc'   => '帐号',
+                    'xpath'  => 'div.s-p > a',
+                    'extra'  => 'text'
+                ],
+                [
+                    'setter' => 'setAccountLink',
+                    'desc'   => '公众号临时链接',
+                    'xpath'  => 'div.s-p > a',
+                    'extra'  => 'href'
+                ]
+            ]
+        ],
         'hots' => [
             'class' => 'Abstracts',
             'container' => '.news-list',
@@ -260,6 +308,69 @@ class DataParse
     {
         $result = self::_parse(self::getParseConfig('account'), $content);
         return $result;
+    }
+
+    /**
+     * 解析公众号文章列表
+     *
+     * @param string $content 内容
+     * 
+     * @return Config List
+     */
+    public static function parseAccountArticles($content)
+    {
+        // wechatName
+        $wechatName = '';
+        if (\preg_match('/title>(.*?)</is', $content, $matches)) {
+            $wechatName = trim($matches[1]);
+        }
+        // name
+        $name = '';
+        if (\preg_match('/profile_account">微信号:(.*?)</i', $content, $matches)) {
+            $name = trim($matches[1]);
+        }
+        try{
+            if (\preg_match('/msgList\s=\s(.*?)(\n|$)/is', $content, $matches)) {
+                $info = $matches[1];
+                $info =  trim(trim($info), ';');
+                $array = \json_decode($info, true);
+                // echo trim($matches[1], ';');
+            } else {
+                die('???');
+                return [];
+            }
+        } catch (\Exception $e) {
+            throw new \Exception('parse Account\'s Articles Fail');
+        }
+        $articles = [];
+        foreach ($array['list'] as $infos) {
+            $time = $infos['comm_msg_info']['datetime'];
+            $data = [
+                'author' => $infos['app_msg_ext_info']['author'],
+                'content_url' => $infos['app_msg_ext_info']['content_url'],
+                'conver'    => $infos['app_msg_ext_info']['cover'],
+                'source_url' => $infos['app_msg_ext_info']['source_url'],
+                'digest'    => $infos['app_msg_ext_info']['digest'],
+                'title' => $infos['app_msg_ext_info']['title'],
+                'publishTime' => $time
+            ];
+            $articles[] = $data;
+
+            foreach ($infos['app_msg_ext_info']['multi_app_msg_item_list'] as $info) {
+                $data = [
+                    'author' => $info['author'],
+                    'content_url' => $info['content_url'],
+                    'conver'    => $info['cover'],
+                    'source_url' => $info['source_url'],
+                    'digest'    => $info['digest'],
+                    'title' => $info['title'],
+                    'publishTime' => $time
+                ];
+                $articles[] = $data;
+            }
+        }
+        
+        return ['name'=>$name,'wechatName'=>$wechatName,'articles'=>$articles];
     }
 
     /**

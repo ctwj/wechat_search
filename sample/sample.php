@@ -111,11 +111,24 @@ function exampleGetTypes()
     return $result; 
 }
 
-$out = exampleSearchAccount();
+/**
+ * Example for getTypes
+ *
+ * @return void
+ */
+function exampleAccountArticles()
+{
+    $url = 'http://mp.weixin.qq.com/profile?src=3&timestamp=1527148418&ver=1&signature=yNZRlIOyYGuFyD85MHxzJHza7EacUTmJS-PB5ZSR8M2OrrAfM23gJZUxV*CrtKImNRWF83VkrWuDzpd6eefAsQ==';
+    $result = \Ctwj\WechatSearch\WechatSearch::getInstance()->accountArticles($url);
+    return $result; 
+}
+
+// $out = exampleSearchAccount();
 // $out = exampleSearchArticles();
 // $out = exampleGetArticle();
 // $out = exampleGetHots();
 // $out = exampleGetTypes();
+$out = exampleAccountArticles();
 
 var_dump($out);
 

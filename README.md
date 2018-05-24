@@ -65,6 +65,10 @@ composer require ctwj\wechat_search_api
     ```
     $instance->searchArticles('?query=%E7%AB%A5%E8%AF%9D&type=1&page=8&ie=utf8');
     ```
+- accountArticles 获取公众号文章列表
+    ```
+    $instance->accountArticles('a accont temp link');
+    ```
 - getArticles  获取文章内容
     ```
     $instance->getArticles('a article temp link');
