@@ -69,9 +69,9 @@ composer require ctwj\wechat_search_api
     ```
     $instance->accountArticles('a accont temp link');
     ```
-- getArticles  获取文章内容
+- getArticle  获取文章内容
     ```
-    $instance->getArticles('a article temp link');
+    $instance->getArticle('a article temp link');
     ```
 - getHots   获取分类热门文章列表
     ```
